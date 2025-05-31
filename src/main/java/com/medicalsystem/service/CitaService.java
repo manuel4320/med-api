@@ -1,30 +1,28 @@
+package com.medicalsystem.service;
+
+import com.medicalsystem.model.Cita;
+import com.medicalsystem.repository.CitaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 @Service
 public class CitaService {
-
     @Autowired
     private CitaRepository citaRepository;
-    @Autowired
-    private PacienteRepository pacienteRepository;
-    @Autowired
-    private UsuarioRepository medicoRepository;
 
-    public Cita agendarCita(CitaRequest request) {
-        Paciente paciente = pacienteRepository.findById(request.getPacienteId()).orElseThrow();
-        Usuario medico = medicoRepository.findById(request.getMedicoId()).orElseThrow();
-
-        Cita cita = new Cita();
-        cita.setFecha(request.getFecha());
-        cita.setHora(request.getHora());
-        cita.setPaciente(paciente);
-        cita.setMedico(medico);
+    public Cita agendarCita(Cita cita) {
         return citaRepository.save(cita);
     }
 
-    public Cita modificarCita(Long id, CitaUpdateRequest request) {
-    Cita cita = citaRepository.findById(id).orElseThrow();
-    cita.setFecha(request.getNuevaFecha());
-    cita.setHora(request.getNuevaHora());
-    return citaRepository.save(cita);
+    public Optional<Cita> modificarFecha(String id, LocalDateTime nuevaFecha) {
+        Optional<Cita> citaOpt = citaRepository.findById(id);
+        citaOpt.ifPresent(cita -> {
+            cita.setFecha(nuevaFecha);
+            citaRepository.save(cita);
+        });
+        return citaOpt;
     }
 }
-

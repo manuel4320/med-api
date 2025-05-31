@@ -1,12 +1,12 @@
 package com.medicalsystem.model;
 
-import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Document(collection = "pacientes")
 public class Paciente extends Usuario {
-    // puedes añadir campos específicos del paciente si los necesitas
+    private String nombre;
+    private String correo;
+
+    // Getters y Setters
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getCorreo() { return correo; }
+    public void setCorreo(String correo) { this.correo = correo; }
 }
